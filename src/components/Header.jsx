@@ -11,12 +11,14 @@ import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
+import Switch from '@mui/material/Switch';
 
 const Header = () => {
   const navigate = useNavigate()                                   
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'))       
-  const [anchorEl, setAnchorEl] = React.useState(null)             
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const label = { inputProps: { 'aria-label': 'Switch demo' } };           
 
   const handleMenuOpen = e => {
     setAnchorEl(e.currentTarget)                                   
@@ -64,6 +66,7 @@ const Header = () => {
                 <Button color="inherit" onClick={() => goTo('/error')}>
                   Error Page
                 </Button>
+                <Switch {...label} />
               </Box>
             </>
           ) : (
@@ -81,6 +84,7 @@ const Header = () => {
                 <MenuItem onClick={() => goTo('/about')}>About</MenuItem>
                 <MenuItem onClick={() => goTo('/error')}>Error Page</MenuItem>
               </Menu>
+              <Switch {...label} />
             </>
           )}
         </Toolbar>
