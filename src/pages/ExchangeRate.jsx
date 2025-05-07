@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box'
+import CircularProgress from '@mui/material/CircularProgress'
 
 const columns = [
     { field: 'currency', headerName: 'Currency', width: 1300 },
@@ -12,10 +14,7 @@ const columns = [
       width: 150,
     },
   ]
-  
 
-  
-  
 
 const ExchangeRate = () => {
     const [rows, setRows] = useState([])

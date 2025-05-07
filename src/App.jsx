@@ -5,6 +5,8 @@ import { DarkModeProvider, useDarkMode } from './context'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import ExchangeRate from './pages/ExchangeRate'
+import About from './pages/About'
+import NotFound from './pages/NotFound'
 
 
 const ThemedApp = () => {
@@ -64,9 +66,11 @@ const ThemedApp = () => {
       <CssBaseline />
       <Routes>
         <Route path='/' element={<Layout/>}>
-          <Route path='dash' element={<Home/>} />
+          <Route index element={<Home/>} />
           <Route path='exchange-rate' element={<ExchangeRate/>} />
+          <Route path='about' element={<About/>} />
         </Route>
+        <Route path="*" element={<NotFound/>} />
       </Routes>
     </ThemeProvider>
   );

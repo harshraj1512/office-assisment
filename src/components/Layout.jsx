@@ -9,7 +9,6 @@ const Layout = () => {
   return (
     <>
       <div className={`flex  w-full flex-col ${darkMode ? 'bg-black text-white' : ''}`}>
-        
         <Header />
         <main >
           <div >
