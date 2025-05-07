@@ -25,7 +25,7 @@ const ExchangeRate = () => {
   return (
     <>
     <div className="px-7 w-full pt-10 ">
-        <p className='text-3xl font-medium pb-5'>Live Exchange Rates (Base: USD)</p>
+        <p className='text-3xl font-medium pb-7'>Live Exchange Rates (Base: USD)</p>
     <Paper sx={{ height: 530, width: '100%' }}>
       <DataGrid
         rows={rows}
