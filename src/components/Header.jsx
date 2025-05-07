@@ -12,13 +12,15 @@ import MenuIcon from '@mui/icons-material/Menu'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import Switch from '@mui/material/Switch';
+import { useDarkMode } from '../context'
 
 const Header = () => {
   const navigate = useNavigate()                                   
   const theme = useTheme()
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'))       
   const [anchorEl, setAnchorEl] = React.useState(null)
-  const label = { inputProps: { 'aria-label': 'Switch demo' } };           
+  const label = { inputProps: { 'aria-label': 'Dark mode toggle' } };
+  const { darkMode, setDarkMode } = useDarkMode();
 
   const handleMenuOpen = e => {
     setAnchorEl(e.currentTarget)                                   
@@ -31,9 +33,18 @@ const Header = () => {
     handleMenuClose()
   }
 
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar 
+        position="static" 
+        sx={{ 
+          bgcolor: darkMode ? 'black' : 'primary.main'
+        }}
+      >
         <Toolbar>                                                 
           { !isDesktop && (
             <IconButton
@@ -66,7 +77,7 @@ const Header = () => {
                 <Button color="inherit" onClick={() => goTo('/error')}>
                   Error Page
                 </Button>
-                <Switch {...label} />
+                <Switch {...label} checked={darkMode} onChange={toggleDarkMode} />
               </Box>
             </>
           ) : (
@@ -84,7 +95,7 @@ const Header = () => {
                 <MenuItem onClick={() => goTo('/about')}>About</MenuItem>
                 <MenuItem onClick={() => goTo('/error')}>Error Page</MenuItem>
               </Menu>
-              <Switch {...label} />
+              <Switch {...label} checked={darkMode} onChange={toggleDarkMode} />
             </>
           )}
         </Toolbar>
