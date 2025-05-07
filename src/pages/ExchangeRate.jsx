@@ -1,41 +1,83 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 
 const columns = [
-    { field: 'id', headerName: 'currency', width: 1300 },
-    { field: 'firstName', headerName: 'Rate', width: 100 },
-  ];
+    { field: 'currency', headerName: 'Currency', width: 1300 },
+    {
+      field: 'rate',
+      headerName: 'Rate (per USD)',
+      type: 'number',
+      width: 150,
+    },
+  ]
   
-  const rows = [
-    { id: 1, lastName: 'Snow', firstName: 389.5887, age: 35 },
-    { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-    { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-    { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-    { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-    { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-    { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-  ];
+
   
-  const paginationModel = { page: 0, pageSize: 5 };
+  
 
 const ExchangeRate = () => {
+    const [rows, setRows] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 5,
+  })
+
+  useEffect(() => {
+    axios
+      .get(
+        'https://v6.exchangerate-api.com/v6/e4b300593c95697ce9b44a67/latest/USD'
+      )
+      .then((res) => {
+        const rates = res.data.conversion_rates || {}
+        const mapped = Object.entries(rates).map(([code, rate]) => ({
+          id: code,
+          currency: code,
+          rate,
+        }))
+        setRows(mapped)
+      })
+      .catch((err) => {
+        console.error('Failed to fetch exchange rates', err)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }, [])
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          height: 400,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    )
+  }
   return (
     <>
-    <div className="px-7 w-full pt-10 ">
-        <p className='text-3xl font-medium pb-7'>Live Exchange Rates (Base: USD)</p>
-    <Paper sx={{ height: 530, width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{ pagination: { paginationModel } }}
-        pageSizeOptions={[5, 10]}
-       
-        sx={{ border: 0 }}
-      />
-    </Paper>
+    <div className="px-7 w-full pt-10">
+      <p className="text-3xl font-medium pb-7">
+        Live Exchange Rates (Base: USD)
+      </p>
+      <Paper sx={{ height: 530, width: '100%' }}>
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pagination
+          paginationModel={paginationModel}
+          onPaginationModelChange={setPaginationModel}
+          pageSizeOptions={[5, 10, 15, 25, 50, 100]}
+          sx={{ border: 0 }}
+        />
+      </Paper>
     </div>
     </>
   )
